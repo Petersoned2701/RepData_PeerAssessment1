@@ -36,7 +36,7 @@ stepsperday <- activity %>% group_by(date) %>%
 hist(stepsperday$daily_steps, breaks = 10, xlab = "Steps Per Day", ylab = "Frequency", col = "blue", main = ("Histogram of Steps Per Day"))
 ```
 
-![](PA1_template_files/figure-html/activity histogram-1.png)<!-- -->
+![](PA1_template_files/figure-html/activity_histogram-1.png)<!-- -->
 
 From the first part, it's trivial to calculate the mean and median of the number of steps taken daily. That's shown below.
 
@@ -70,7 +70,7 @@ steps_interval <- activity %>% group_by(interval) %>%
 ggplot(steps_interval, aes(interval, avg_step_interval)) + geom_line(size = 1, color = "red") + xlab("Interval") + ylab("Average # of Steps") + ggtitle("Time Series Plot of Average Steps Per Interval") + theme(plot.title = element_text(hjust = 0.5))
 ```
 
-![](PA1_template_files/figure-html/activity interval plot-1.png)<!-- -->
+![](PA1_template_files/figure-html/activity_interval_plot-1.png)<!-- -->
 
 ```r
 max_interval <- as.numeric(steps_interval[which.max(steps_interval$avg_step_interval), "interval"])
@@ -128,4 +128,4 @@ imputed_steps_per_day <- imputed_steps_per_day %>%
 ggplot(imputed_steps_per_day, aes(interval, avg_step_interval)) + geom_line(size = 1, color = "red") + xlab("Interval") + ylab("Average # of Steps") + ggtitle("Time Series Plot of Average Steps Per Interval") + theme(plot.title = element_text(hjust = 0.5)) +facet_grid(day~.)
 ```
 
-![](PA1_template_files/figure-html/Weekday vs Weekend-1.png)<!-- -->
+![](PA1_template_files/figure-html/Weekday_vs_Weekend-1.png)<!-- -->

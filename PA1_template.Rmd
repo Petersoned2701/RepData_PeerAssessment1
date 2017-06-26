@@ -38,14 +38,14 @@ activity$date <- as.Date(as.character(activity$date), "%Y-%m-%d")
 ## What is mean total number of steps taken per day?
 
 Our first task is to look at a histogram of the total number of steps taken per day, less any NA values that appear in the data. This is easily done leveraging dplyr to group by date and then summarize the data by summing up all of the steps in any given day. We then call the hist() function to display a histogram of the transformed data.
-```{r activity histogram, echo = TRUE}
+```{r activity_histogram, echo = TRUE}
 stepsperday <- activity %>% group_by(date) %>%
                             summarize(daily_steps = sum(steps, na.rm = TRUE))
 hist(stepsperday$daily_steps, breaks = 10, xlab = "Steps Per Day", ylab = "Frequency", col = "blue", main = ("Histogram of Steps Per Day"))
 ```
 
 From the first part, it's trivial to calculate the mean and median of the number of steps taken daily. That's shown below.
-```{r mean and median, echo = TRUE}
+```{r mean_and_median, echo = TRUE}
 mean_steps <- mean(stepsperday$daily_steps)
 median_steps <- median(stepsperday$daily_steps)
 mean_steps
@@ -56,7 +56,7 @@ median_steps
 
 The second part of this analysis is to look at the average daily activity pattern by looking at a time series graph of the average steps by interval. Again, we leverage dplyr to group by interval and summarize using the mean number of steps for each interval, again ignoring NAs. We then use ggplot to display the graph, showing the pattern of activity. Finally, we use which.max() to look up the interval with the largest mean number of steps and display it.
 
-```{r activity interval plot, echo = TRUE}
+```{r activity_interval_plot, echo = TRUE}
 steps_interval <- activity %>% group_by(interval) %>%
                                summarize(avg_step_interval = mean(steps, na.rm = TRUE))
 
@@ -91,7 +91,7 @@ hist(imputed_steps_per_day$daily_steps, breaks = 10, xlab = "Steps Per Day", yla
 Finally, we want to look at the differences between weekdays and weekends. In order to do this, I wrote a simple function that takes the name of the day (which is what the weekdays() function returns) and returns whether it is a Weekend day or a Weekday. Getting from date to Weekend/Weekday is a multi-step process. First, we convert our Dates into day names. I then use lapply to apply my weekend function to the day vector (unlist is necessary to convert the result of lapply, a list, to a vector). I then replace the corresponding column in imputed_steps_per_day with that result. Finally, we once again leverage dplyr to group by both interval and day and then summarize the mean number of steps per interval per Weekday or Weekend day.
 
 The plot is once again handled by ggplot, utilizing the facet_grid to allow us to display comparison plots of mean activity by interval and by Weekend day and Weekday. We do see some differences, but they are partially obscured by how I imputed the data earlier. Since I used the mean of all days, the imputed data is a combination of both Weekend and Weekday activity, leaning heavier toward Weekday since there are more of them. This could be mitigated by first categorizing the data by Weekend day or Weekday and using the means of each to impute the respective missing data. There would still be some error introduced, since there will be less Weekend data to average than Weekday data.
-```{r Weekday vs Weekend, echo = TRUE}
+```{r Weekday_vs_Weekend, echo = TRUE}
 
 weekend <- function(day){
         if (day == 'Saturday' || day == "Sunday"){
